@@ -49,6 +49,10 @@ public class GadgetCutPaste extends BaseGadget {
         return Config.CUTPASTEGADGET_NEWCOST.get();
     }
 
+    public int getMaxSize() {
+        return Config.CUTPASTEGADGET_MAXSIZE.get();
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -131,6 +135,7 @@ public class GadgetCutPaste extends BaseGadget {
         Level level = player.level();
         BlockPos cutStart = GadgetNBT.getCopyStartPos(heldItem);
         BlockPos cutEnd = GadgetNBT.getCopyEndPos(heldItem);
+        int maxSize = gadgetCutPaste.getMaxSize();
 
         if (cutStart.equals(GadgetNBT.nullPos) || cutEnd.equals(GadgetNBT.nullPos)) return;
 
@@ -138,7 +143,6 @@ public class GadgetCutPaste extends BaseGadget {
 
         Stream<BlockPos> areaStream = BlockPos.betweenClosedStream(area);
         long size = areaStream.count();
-        int maxSize = 100000; //Todo Config?
         if (size > maxSize) {
             player.displayClientMessage(Component.translatable("buildinggadgets2.messages.areatoolarge", maxSize, size), false);
             return;

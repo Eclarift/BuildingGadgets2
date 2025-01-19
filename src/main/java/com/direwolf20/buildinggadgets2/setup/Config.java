@@ -11,6 +11,7 @@ public class Config {
 
     public static final String CATEGORY_GENERAL = "general";
     public static final String CATEGORY_POWER = "power";
+    public static final String CATEGORY_MAXSIZE = "maxsize";
     public static final String SUBCATEGORY_BUILDINGGADGET = "building_gadget";
     public static final String SUBCATEGORY_EXCHANGINGGADGET = "exchanging_gadget";
     public static final String SUBCATEGORY_CUTPASTEGADGET = "cutpaste_gadget";
@@ -19,13 +20,19 @@ public class Config {
 
     public static ForgeConfigSpec.IntValue BUILDINGGADGET_MAXPOWER;
     public static ForgeConfigSpec.IntValue BUILDINGGADGET_COST;
+
     public static ForgeConfigSpec.IntValue EXCHANGINGGADGET_MAXPOWER;
     public static ForgeConfigSpec.IntValue EXCHANGINGGADGET_COST;
+
     public static ForgeConfigSpec.IntValue CUTPASTEGADGET_MAXPOWER;
     public static ForgeConfigSpec.IntValue CUTPASTEGADGET_COST;
+    public static ForgeConfigSpec.IntValue CUTPASTEGADGET_MAXSIZE;
+
     public static ForgeConfigSpec.IntValue CUTPASTEGADGET_NEWCOST;
     public static ForgeConfigSpec.IntValue COPYPASTEGADGET_MAXPOWER;
     public static ForgeConfigSpec.IntValue COPYPASTEGADGET_COST;
+    public static ForgeConfigSpec.IntValue COPYPASTEGADGET_MAXSIZE;
+
     public static ForgeConfigSpec.IntValue DESTRUCTIONGADGET_MAXPOWER;
     public static ForgeConfigSpec.IntValue DESTRUCTIONGADGET_COST;
 
@@ -50,6 +57,10 @@ public class Config {
 
         COMMON_BUILDER.comment("Power settings").push(CATEGORY_POWER);
         powerConfig();
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Max Size settings").push(CATEGORY_MAXSIZE);
+        maxSizeConfig();
         COMMON_BUILDER.pop();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_BUILDER.build());
@@ -103,6 +114,18 @@ public class Config {
                 .defineInRange("maxPower", 1000000, 0, Integer.MAX_VALUE);
         DESTRUCTIONGADGET_COST = COMMON_BUILDER.comment("Base cost per block Destroyed")
                 .defineInRange("baseCost", 200, 0, Integer.MAX_VALUE);
+        COMMON_BUILDER.pop();
+    }
+
+    private static void maxSizeConfig() {
+        COMMON_BUILDER.comment("Cut Paste Gadget").push(SUBCATEGORY_CUTPASTEGADGET);
+        CUTPASTEGADGET_MAXSIZE = COMMON_BUILDER.comment("Maximum size for the Cut and Paste Gadget")
+                .defineInRange("maxSize", 100000, 10000, 1000000);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Copy Paste Gadget").push(SUBCATEGORY_COPYPASTEGADGET);
+        COPYPASTEGADGET_MAXSIZE = COMMON_BUILDER.comment("Maximum size for the Copy and Paste Gadget")
+                .defineInRange("maxSize", 100000, 10000, 1000000);
         COMMON_BUILDER.pop();
     }
 
